@@ -1,0 +1,327 @@
+﻿@model SecSaudeAH.Areas.SecSaude.Models.TrocasNotas.Ingresso
+@{
+    ViewData["Title"] = "Adicionar notas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Page"] = "Adiconar notas";
+    ViewData["Caminho"] = "<li>Adiconar notas</li>";
+}
+
+<style>
+    .curso-desativa {
+        cursor: not-allowed !important;
+    }
+</style>
+
+<div class="row m-15 justify-content-center " style="font-size:18px">
+    <div class="col-2"></div>
+    <div class="col-sm-12 col-md-4">
+        <b>Nome: </b>
+        @ViewBag.Nome
+    </div>
+    <div class=" col-sm-12 col-md-4">
+        <b>Data de Nascimento: </b>
+        @ViewBag.DataNasc
+    </div>
+</div>
+
+<div class="row m-15 justify-content-center " style="font-size:18px">
+    <div class="col-2"></div>
+    <div class=" col-sm-12 col-md-4">
+        <b>Telefone: </b>
+        @ViewBag.Telefone
+    </div>
+    <div class="col-sm-12 col-md-4">
+        <b>Endereço: </b>
+        @ViewBag.Endereco
+    </div>
+</div>
+
+<div class="row my-5 ">
+    <div class="col-12 text-center">
+        <button data-id="0" id="modal-open" class="btn btn-success">
+            <i class="fa fa-plus-circle"></i>
+            <b>Incluir Nota Fiscal</b>
+        </button>
+    </div>
+</div>
+
+<div class="modal fade" role="dialog" data-backdrop="static" id="modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="background-color:#eee">
+            <form asp-action="Notas" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="IdCidadao" id="IdCidadao" value="@ViewBag.IdCidadao" />
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times-circle"></i>  Fechar</button>
+                    <button type="submit" id="Salvar" class="btn btn-success"><i class="fa fa-check-circle"></i> Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" style="padding-top:120px" role="dialog" id="trocarnota" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title"><i class="fa fa-exclamation-triangle " style="color:yellow"></i>  ATENÇÃO <i style="color:yellow" class="fa fa-exclamation-triangle"></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span class="font-weight-bold font-18">
+                    <p>Tem certeza que deseja realizar a troca?</p>
+                    <p>Após confirmar será descontado R$ 500 do saldo.</p>
+                    <input type="hidden" id="del" />
+                </span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times-circle"></i>  Fechar</button>
+                <button type="button" id="confirm-del" class="btn btn-success"><i class="fa fa-check-circle"></i> Confirmar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@if (Model.Notas.Count() > 0)
+{
+    <div class="row">
+        <div class="col 12 text-center">
+            <h3>Notas fiscais</h3>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row justify-content-center ">
+            <div class="col-sm-10">
+                <table class="table table-sm  table-responsive-lg bg-white table-hover" style="font-size:18px">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th width="15" class="text-center">Id</th>
+                            <th>CNPJ</th>
+                            <th>Número da nota</th>
+                            <th class="text-nowrap">Valor</th>
+                            <th width="15" class="text-center">Anexo</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        @foreach (var item in Model.Notas)
+                        {
+                            <tr class="bg-white">
+                                <td class="text-nowrap">@item.Id</td>
+                                <td class="text-nowrap">@item.CNPJ </td>
+                                <td class="text-nowrap">@item.NumNota</td>
+                                <td class="text-nowrap "> <b>R$</b>  <span class="valor">@item.ValorS </span>  </td>
+                                <td class="text-nowrap  text-center" width="15">
+                                    @*<a class="mr-2 deletar" href="#" data-toggle="tooltip" data-placement="left" title="Deletar" data-id="@item.Id">
+                                            <i class="fa fa-times text-danger"> </i>
+                                        </a>*@
+                                    <a class="" href="~/Upload/Notas/@ViewBag.IdCidadao/@item.FotoEndereco " data-toggle="tooltip" title="Anexo" data-placement="left" data-id="@item.Id" target="_blank">
+                                        <i class="text-dark fa fa-file"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div><div class="row mt-5">
+        <div class="col 12 text-center">
+            <h3>Saldo</h3>
+        </div>
+    </div>
+    @if (ViewBag.Saldo >= 500)
+    {
+        <div class="row justify-content-center mt-2">
+            <div class="col-md-6 col-sm-5 col-lg-5 col-xlg-3 text-center">
+                <div class="card card-hover text-white">
+                    <div class="box bg-info text-center">
+                        <i class="fa fa-money-bill-alt m-b-5 font-20"></i>
+                        <h5 class="m-b-0 m-t-5">
+                            <span style="font-size:18px">R$ </span> <span class="valor" style="font-size:18px"> @ViewBag.Saldo </span>
+                        </h5>
+                        <span class="font-light"> Seu Saldo </span>
+                    </div>
+                </div>
+                <a style="font-size:18px" id="trocarsaldo" data-id="@ViewBag.IdCidadao" href="#">Deseja converter o saldo em um ingresso?</a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row justify-content-center mt-2">
+            <div class="col-md-6 col-sm-5 col-lg-5 col-xlg-3 text-center">
+                <div class="card card-hover text-white">
+                    <div class="box bg-danger text-center">
+                        <i class="fa fa-frown m-b-5 font-20"></i>
+                        <h5 class="m-b-0 m-t-5">
+                            <span style="font-size:18px">R$ </span> <span class="valor" style="font-size:18px"> @ViewBag.Saldo </span>
+                        </h5>
+                        <span class="font-light"> Seu Saldo </span>
+                    </div>
+                </div>
+                <span style="font-size:18px" class="text-info">Adicione mais notas para somar ao saldo.</span>
+            </div>
+        </div>
+    }
+
+    if(Model.Trocas.Count > 0)
+    {
+
+              
+
+    <div class="row mt-5">
+        <div class="col 12 text-center">
+            <h3>Trocas realizadas</h3>
+        </div>
+    </div>
+
+    <div class="row justify-content-center ">
+        <div class="col-sm-10">
+            <table class="table table-sm  table-responsive-lg bg-white table-hover" style="font-size:18px">
+                <thead class="thead-dark">
+                    <tr>
+                        <th width="15" class="text-center">Id</th>
+                        <th>Desconto</th>
+                        <th>Evento</th>
+                        <th class="">Data</th>
+                        <th width="15" class="text-center">Comprovante</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white">
+                    @foreach (var item in Model.Trocas)
+                    {
+                        <tr class="bg-white">
+                            <td class="text-nowrap">@item.IdTroca</td>
+                            <td class="text-nowrap"><b>R$</b> 500  </td>
+                            <td class="text-nowrap">Show Zé Vaqueiro</td>
+                            <td class="text-nowrap ">@item.DataTroca </td>
+                            <td class="text-nowrap text-center" width="15"> 
+                                <a class="mr-2 imprimir" href="#" data-toggle="tooltip" data-placement="left" title="Comprovante" data-id="@item.IdTroca">
+            <i class="fa fa-file-alt text-dark "> </i>
+        </a>
+                                @*<a class="" href="~/Upload/Notas/@ViewBag.IdCidadao/@item.FotoEndereco " data-toggle="tooltip" title="Anexo" data-placement="left" data-id="@item.Id" target="_blank">
+            <i class="text-dark fa fa-file"></i>
+        </a>*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    }
+
+}
+
+@section Scripts{
+
+<script type="text/javascript">
+
+    function disabledNumNota() {
+        $("#CNPJ").keyup(function () {
+            var aa = $(this).val().length            
+            if (aa > 17) {                
+                $("#NumNota").removeAttr("disabled", true)
+            } else {
+                $("#NumNota").attr("disabled", true)                
+            }
+        })
+    }
+
+    $("#trocarsaldo").click(function () {
+        var id = $(this).data("id")
+        $("#del").val(id)
+        $("#trocarnota").modal("show")
+    })
+
+    $("#confirm-del").click(function () {
+        window.location.href = "@Url.Action("TrocarIngresso")?id=" + $("#del").val();
+    });
+
+    function atulizarFuncoes()
+    {
+        $(".CNPJ").mask("00.000.000/0000-00")
+        $('.valor').mask('#.##0,00', { reverse: true });
+        $('#NumNota').mask('000000000')
+    }
+
+    function ajaxNota() {
+        var valor = $("#NumNota").val();
+        var CNPJ = $("#CNPJ").val()
+
+        if (valor.length > 8) {
+            $.post('@Url.Action("VerificaNumNota")', { "num": valor, "CNPJ": CNPJ }, function (response) {
+                if (response) {
+                    $(".verifica-valor").text("Nota já cadastrada.")
+                    $("#Salvar").attr("disabled", "disabled").addClass("curso-desativa")
+                } else {
+                    $(".verifica-valor").text("")
+                    $("#Salvar").removeAttr("disabled", "disabled").removeClass("curso-desativa")
+                }
+            })
+        } else {            
+            $(".verifica-valor").text("")
+            $("#Salvar").removeAttr("disabled", "disabled").removeClass("curso-desativa")
+        }
+    }
+
+    function verificaNumNota()
+    {
+        $("#NumNota").keyup(function () {
+            ajaxNota()
+        })       
+    }
+
+    $("#modal-open, .edit").click(function () {
+        var id = $(this).data("id");
+        $.post('@Url.Action("AjaxNotas")', { "id": id }, function (response) {
+            $("#modal-body").html(response);
+            if (id != 0) {
+                $("#Salvar").removeAttr("disabled", "disabled").removeClass("curso-desativa")
+                $(".title").text("Editar nota fiscal");
+                $("#modal").modal("show");
+                atulizarFuncoes();
+                verificaNumNota()
+                disabledNumNota()
+            } else {
+                $("#Salvar").removeAttr("disabled", "disabled").removeClass("curso-desativa")
+                $(".title").text("Cadastrar nota fiscal");
+                $("#modal").modal("show");
+                atulizarFuncoes();
+                verificaNumNota()
+                disabledNumNota()
+            }
+        })
+    })
+
+    atulizarFuncoes();
+
+    var valores = $(".valor")
+
+    $.each(valores, function (key, element) {
+        var a = this.classList;
+        var texto = $(element).text().replace(" ", ".");
+        var first = texto.substring(0, 1) == "." ? true : false
+        var valorFinal = first ? texto.substring(1) : texto
+        var valorsClass = $("." + a[0] + "");
+        $(valorsClass[key]).text(valorFinal)
+    })
+
+    $(".imprimir").click(function () {
+            var id = $(this).val();
+    })
+
+</script>
+
+}

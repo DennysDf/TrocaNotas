@@ -1,0 +1,38 @@
+﻿@model SecSaudeAH.Areas.SecSaude.Models.TrocasNotas.NotaFiscaisVM
+@await Html.PartialAsync("_ValidationScriptsPartial")
+@{
+    Layout = null;
+}
+
+
+
+<input type="hidden" asp-for="Id" />
+<div class="row mb-3">
+    <div class="col-sm-12">
+        <b>CNPJ:*</b>
+        <input type="text" asp-for="CNPJ" class="form-control CNPJ" placeholder="00.000.000/0000-00" />
+        <span asp-validation-for="CNPJ"></span>
+    </div>
+</div>
+<div class="row  mb-3">
+    <div class="col-sm-12">
+        <b>Número da nota:*</b>
+        <input disabled type="text" asp-for="NumNota" class="form-control" placeholder="Número da nota fiscal..." />
+        <span class="verifica-valor text-danger font-weight-bold"></span>
+        <span asp-validation-for="NumNota"></span>
+    </div>
+</div>
+<div class="row  mb-3">
+    <div class="col-sm-12">
+        <b>Valor da nota:*</b>
+        <input type="text" asp-for="ValorS" class="form-control valor" placeholder="Valor da nota fiscal..." />
+        <span asp-validation-for="ValorS"></span>
+    </div>
+</div>
+<div class="row  mb-3">
+    <div class="col-sm-12">
+        <b>Anexo:*</b>
+        <input asp-for="Foto" type="file" class="form-control" accept="image/*" placeholder="Valor da nota fiscal..." />
+        <span asp-validation-for="Foto"></span>
+    </div>
+</div>

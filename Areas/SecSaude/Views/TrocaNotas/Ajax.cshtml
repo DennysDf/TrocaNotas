@@ -1,0 +1,72 @@
+﻿@model SecSaudeAH.Areas.SecSaude.Models.Pacientes.TrocaNotasVM
+@await Html.PartialAsync("_ValidationScriptsPartial")
+@{
+    Layout = null;
+}
+
+
+<div class="row">
+    <input type="hidden" asp-for="Id" />
+    <div class=" col-sm-8">
+        <label asp-for="Nome">Nome*:</label>
+        <input type="text" class="form-control" asp-for="Nome" placeholder="Escreva o Nome..." autofocus />
+        <span asp-validation-for="Nome"></span>
+    </div>
+    <div class="col-sm-4">
+        <label asp-for="DataNasc">Data de Nascimento*:</label>
+        <input type="text" class="form-control data" asp-for="DataNasc" placeholder="Escreva a Data de Nascimento..." autofocus />
+        <span asp-validation-for="DataNasc"></span>
+    </div>
+</div>
+@*<div class="row mt-2">
+        <div class="col-12">
+            <label asp-for="NomeMae">Nome da Mãe*:</label>
+            <input type="text" class="form-control" asp-for="NomeMae" placeholder="Escreva o Nome da Mãe..." autofocus />
+            <span asp-validation-for="NomeMae"></span>
+        </div>
+    </div>*@
+<div class="row mt-2">
+    <div class="col-sm-6">
+        <label asp-for="CPF">CPF*:</label>
+        <input type="text" class="form-control" asp-for="CPF" placeholder="Escreva o CPF..." autofocus />
+        <span asp-validation-for="CPF"></span>
+    </div>
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="col-12">
+                <label asp-for="Telefone">Telefone*:</label>
+                <input type="text" class="form-control celular" asp-for="Telefone" placeholder="Escreva o Telefone..." autofocus />
+                <span asp-validation-for="Telefone"></span>
+            </div>
+        </div>
+    </div>
+    @*<div class="col-sm-6">
+            <label asp-for="CNS">CNS*:</label>
+            <input type="text" class="form-control cns" asp-for="CNS" placeholder="Escreva o CNS..." autofocus />
+            <span asp-validation-for="CNS"></span>
+        </div>*@
+</div>
+<div class="row mt-2">
+    <div class="col-sm-12">
+        <label asp-for="Endereco">Endereço*:</label>
+        <input type="text" class="form-control" asp-for="Endereco" placeholder="Escreva o Endereço..." autofocus />
+        <span asp-validation-for="Endereco"></span>
+    </div>
+    <div class="col-sm-4">
+        @*<div class="row">
+                <div class="col-12">
+                    <label asp-for="Telefone">Telefone*:</label>
+                    <input type="text" class="form-control celular" asp-for="Telefone" placeholder="Escreva o Telefone..." autofocus />
+                    <span asp-validation-for="Telefone"></span>
+                </div>
+            </div>*@
+        @*<div class="row mt-2" id="linha-tel">
+                <div class="col-12">
+                    <label id="add-tel">
+                        <a href="#"><i class="fa fa-plus-circle"></i> Adicinar novo telefone  </a>
+                    </label>
+                </div>
+            </div>*@
+    </div>
+</div>
+

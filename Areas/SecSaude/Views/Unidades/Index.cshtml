@@ -1,0 +1,154 @@
+﻿@model ICollection<SecSaudeAH.Areas.SecSaude.Models.Unidades.UnidadesVM>
+@{
+    ViewData["Title"] = "Unidades";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Page"] = "Listagem de Unidades";
+    ViewData["Caminho"] = "<li>Unidades</li>";
+}
+
+
+<div class="row mb-5">
+    <div class="col-12 text-center">
+        <button data-id="0" id="modal-open" class="btn btn-success">
+            <i class="fa fa-plus-circle"></i>
+            <b>Incluir Unidade</b>
+        </button>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row justify-content-center ">
+        <div class="col-sm-10">
+            <table class="table table-sm  table-responsive-lg bg-white table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th width="15" class="text-center"></th>
+                        <th>Descrição</th>
+                        <th>Endereço</th>
+                        <th class="text-nowrap">Telefone</th>
+                        <th width="15" class="text-center">#</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white">
+                    @foreach (var item in Model)
+                    {
+                    <tr class="bg-white">
+                        <td class="text-nowrap">@item.Id</td>
+                        <td class="text-nowrap">@item.Nome</td>
+                        <td class="text-nowrap">@item.Endereco</td>
+                        <td class="text-nowrap">@item.Telefone</td>
+                        <td class="text-nowrap text-right" width="15">
+                            <a class="mr-2 deletar" href="#" data-toggle="tooltip" data-placement="left" title="Deletar" data-id="@item.Id">
+                                <i class="fa fa-times text-danger"> </i>
+                            </a>
+                            <a class="edit" href="#" data-toggle="tooltip" title="Editar" data-placement="left" data-id="@item.Id">
+                                <i class="text-dark fa fa-pencil-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" role="dialog" data-backdrop="static" id="modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form asp-action="Index" method="post">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title title">Cadastrar Material</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times-circle"></i>  Fechar</button>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-check-circle"></i> Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" style="padding-top:120px" role="dialog" id="delete" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title"><i class="fa fa-exclamation-triangle " style="color:yellow"></i>  ATENÇÃO <i style="color:yellow" class="fa fa-exclamation-triangle"></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span class="font-weight-bold font-18">
+                    Tem certeza que deseja apagar esta unidade?
+                    <input type="hidden" id="del" />
+                </span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times-circle"></i>  Fechar</button>
+                <button type="button" id="confirm-del" class="btn btn-success"><i class="fa fa-check-circle"></i> Confirmar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts{
+    <script>
+
+        function atualizarFuncoes() {
+            $(".celular").mask('(00) 0 0000-0000');
+        }
+
+        atualizarFuncoes()
+
+         $("#modal-open, .edit").click(function () {
+            var id = $(this).data("id");
+            $.post('@Url.Action("Ajax")', { "id": id }, function (response) {
+
+                $("#modal-body").html(response);
+
+                if (id !=0) {
+                    $(".title").text("Editar Unidade")
+                    atualizarFuncoes()
+                } else {
+                    $(".title").text("Cadastrar Unidade")
+                    atualizarFuncoes()
+                }
+                $("#modal").modal("show");
+            })
+          })
+
+        $(".deletar").click(function () {
+            var id = $(this).data("id")
+            $("#del").val(id)
+            $("#delete").modal("show")
+        })
+
+        $("#confirm-del").click(function () {
+            window.location.href = "@Url.Action("Delete")?id=" + $("#del").val();
+        });
+
+        $(".btn-dark").tooltip();
+
+        $(".table").DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Portuguese-Brasil.json"
+            }
+        }).order([1, 'asc'])
+
+
+
+    </script>
+}
+

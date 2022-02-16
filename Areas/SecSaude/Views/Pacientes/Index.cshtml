@@ -1,0 +1,162 @@
+﻿@model ICollection<SecSaudeAH.Areas.SecSaude.Models.Pacientes.PacientesVM>
+@{
+    ViewData["Title"] = "Pacientes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Page"] = "Listagem de Pacientes";
+    ViewData["Caminho"] = "<li>Pacientes</li>";
+}
+
+
+<div class="row mb-3 ">
+    <div class="col-12 text-center">
+        <button data-id="0" id="modal-open" class="btn btn-success">
+            <i class="fa fa-plus-circle"></i>
+            <b>Incluir Paciente</b>
+        </button>
+    </div>
+</div>
+
+<table class="table table-sm table-striped  table-responsive-lg bg-white table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th width="15" class="text-center">Nome</th>
+            <th>Endereço</th>
+            <th>CNS e CPF</th>
+            <th>Telefone</th>
+            <th>Nome da Mãe</th>
+            <th>Data Nas.</th>              
+            <th width="15" class="text-center">#</th>
+        </tr>
+    </thead>
+    <tbody class="bg-white">
+        @foreach (var item in Model)
+        {
+            <tr class="bg-white">
+                <td class="text-nowrap">@item.Nome</td>
+                <td class="text-nowrap">@item.Endereco</td>
+                <td class="text-nowrap"> <b>CNS: </b> @item.CNS <br /><b>CPF: </b> @item.CPF </td>
+                <td class="text-nowrap">@item.Telefone</td>
+                <td class="text-nowrap">@item.NomeMae</td>
+                <td class="text-nowrap">@item.DataNasc</td>
+                <td class="text-nowrap text-right" width="15">
+
+                    <a class="mr-2 deletar" href="#" data-toggle="tooltip" data-placement="left" title="Deletar" data-id="@item.Id">
+                        <i class="fa fa-times text-danger"> </i>
+                    </a>
+
+                    <a class="edit" href="#" data-toggle="tooltip"  title="Editar" data-placement="left" data-id="@item.Id">
+                        <i class="text-dark fa fa-pencil-alt"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="modal fade" role="dialog" data-backdrop="static" id="modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form asp-action="Index" method="post">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title title">Cadastrar Material</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times-circle"></i>  Fechar</button>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-check-circle"></i> Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" style="padding-top:120px" role="dialog" id="delete" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title"><i class="fa fa-exclamation-triangle " style="color:yellow"></i>  ATENÇÃO <i style="color:yellow" class="fa fa-exclamation-triangle"></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span class="font-weight-bold font-18">
+                    Tem certeza que deseja apagar este paciente?
+                    <input type="hidden" id="del-paciente" />
+                </span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times-circle"></i>  Fechar</button>
+                <button type="button" id="confirm-del" class="btn btn-success"><i class="fa fa-check-circle"></i> Confirmar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts{
+    <script>
+
+        function atulizarFuncoes() {
+            $(".celular").mask('(00) 0 0000-0000');
+            $(".cns").mask('000 0000 0000 0000');
+            $(".data").mask("00/00/0000")
+            $("#CPF").mask("000.000.000-00")
+            $(".data").datetimepicker({ useCurrent: false, maxDate: $.now(), format: 'DD/MM/YYYY', locale: "pt-br" });
+
+            $("#add-tel").click(function () {
+                $("#linha-tel").append('<div class="row"><div class="col-12"><label asp-for="Telefone">Telefone*:</label><input type="text" class="form-control celular" asp-for="Telefone" placeholder="Escreva o Telefone..." autofocus /><span asp-validation-for="Telefone"></span></div></div>');
+                $(".celular").mask('(00) 0 0000-0000');
+            })
+        }
+
+         $("#modal-open, .edit").click(function () {
+            var id = $(this).data("id");
+            $.post('@Url.Action("Ajax")', { "id": id }, function (response) {
+
+                $("#modal-body").html(response);
+
+                if (id !=0) {
+                    $(".title").text("Editar Paciente")
+                    atulizarFuncoes()
+                } else {
+                    $(".title").text("Cadastrar Paciente")
+                    atulizarFuncoes()
+                }
+                $("#modal").modal("show");
+            })
+          })
+
+        $(".deletar").click(function () {
+            var id = $(this).data("id")
+            $("#del-paciente").val(id)
+            $("#delete").modal("show")
+        })
+
+        $("#confirm-del").click(function () {
+            window.location.href = "@Url.Action("Delete")?id=" + $("#del-paciente").val();
+        });
+
+        $(".btn-dark").tooltip();
+
+        $(".table").DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Portuguese-Brasil.json"
+            }
+        }).order([0, 'asc'])
+
+
+
+    </script>
+}
+

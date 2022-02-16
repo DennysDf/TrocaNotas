@@ -1,0 +1,27 @@
+﻿@model SecSaudeAH.Areas.SecSaude.Models.Unidades.UnidadesVM
+@await Html.PartialAsync("_ValidationScriptsPartial")
+@{
+    Layout = null;
+}
+
+
+<div class="row">
+    <input type="hidden" asp-for="Id" />
+    <div class=" col-sm-12">
+        <label asp-for="Nome">Descrição*:</label>
+        <input type="text" class="form-control" asp-for="Nome" placeholder="Escreva a Descrição..." autofocus />
+        <span asp-validation-for="Nome"></span>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-sm-8">
+        <label asp-for="Endereco">Endereço*:</label>
+        <input type="text" class="form-control" asp-for="Endereco" placeholder="Escreva o Endereço..." autofocus />
+        <span asp-validation-for="Endereco"></span>
+    </div>
+    <div class="col-sm-4">
+        <label asp-for="Telefone">Telefone:</label>
+        <input type="text" class="form-control celular" asp-for="Telefone" placeholder="Escreva o Telefone..." autofocus />        
+    </div>
+</div>
+<input type="hidden" asp-for="Tipo" value="2" />

@@ -1,0 +1,182 @@
+﻿@model SecSaudeAH.Areas.SecSaude.Models.MedicoVM.MedicosVM
+@await Html.PartialAsync("_ValidationScriptsPartial")
+@{
+    Layout = null;
+}
+
+<style>
+    /* The container */
+    .containerInput {
+        display: block;
+        position: relative;
+        padding-left: 0;
+        margin-bottom: 12px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        /* Hide the browser's default radio button */
+        .containerInput input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+    /* Create a custom radio button */
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 75px;
+        height: 25px;
+        width: 25px;
+        background-color: #eee;
+        border-radius: 50%;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .containerInput:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
+
+    /* When the radio button is checked, add a blue background */
+    .containerInput input:checked ~ .checkmark {
+        background-color: #2196F3;
+    }
+
+    /* Create the indicator (the dot/circle - hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    /* Show the indicator (dot/circle) when checked */
+    .containerInput input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    /* Style the indicator (dot/circle) */
+    .containerInput .checkmark:after {
+        top: 9px;
+        left: 9px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: white;
+    }
+</style>
+
+
+
+<style>
+    /* The container */
+    .containerCheck {
+        display: block;
+        position: relative;
+        padding-left: 0px;
+        margin-bottom: 12px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    /* Hide the browser's default checkbox */
+    .containerCheck input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    /* Create a custom checkbox */
+    .checkmarkes {
+        position: absolute;
+        top: 0;
+        left: 150px;
+        height: 25px;
+        width: 25px;
+        background-color: #eee;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .containerCheck:hover input ~ .checkmarkes {
+        background-color: #ccc;
+    }
+
+    /* When the checkbox is checked, add a blue background */
+    .containerCheck input:checked ~ .checkmarkes {
+        background-color: #2196F3;
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmarkes:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .containerCheck input:checked ~ .checkmarkes:after {
+        display: block;
+    }
+
+    /* Style the checkmark/indicator */
+    .containerCheck .checkmarkes:after {
+        left: 9px;
+        top: 5px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+</style>
+
+<div class="row">
+    <input type="hidden" asp-for="Id" />
+    <div class=" col-sm-8">
+        <label asp-for="Nome">Descrição*:</label>
+        <input type="text" class="form-control" asp-for="Nome" placeholder="Escreva a Descrição..." autofocus />
+        <span asp-validation-for="Nome"></span>
+    </div>
+    <div class="col-sm-4">
+        <label asp-for="CRM">CRM:</label>
+        <input class="form-control crm" type="text" asp-for="CRM" placeholder="Escreva a CRM..." />
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-sm-6 mt-4">
+        <label class="containerCheck" asp-for="IsProprio">
+            Médico do Municipio?
+            <input asp-for="IsProprio" type="checkbox">
+            <span class="checkmarkes"></span>
+        </label>
+    </div>
+    <div class="col-sm-6">
+        <label>Sexo*:</label>
+        <div class="row">
+            <div class="col-6">
+                <label class="containerInput">
+                    Feminino
+                    <input type="radio" asp-for="Sexo" value="F">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="col-6">
+                <label class="containerInput">
+                    Masculino
+                    <input type="radio" asp-for="Sexo" value="M">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
